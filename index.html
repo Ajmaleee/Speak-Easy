@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Speak Easy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#0b5f6b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<style>
+:root{--bg:#f4f7f8;--sf:#fff;--sf2:#e8eef0;--tx:#0f1c1f;--mu:#526469;--pr:#0b5f6b;--on:#fff;--ac:#d7eef2;--er:#b3261d;--ln:#d3dde0;--sh:0 1px 3px rgba(0,0,0,.14)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0d1416;--sf:#162023;--sf2:#1f2c30;--tx:#e6eef0;--mu:#93a6ab;--pr:#5cc3d1;--on:#00343b;--ac:#123c43;--er:#f2b8b5;--ln:#2b3a3f;--sh:none}}
+:root[data-theme=dark]{--bg:#0d1416;--sf:#162023;--sf2:#1f2c30;--tx:#e6eef0;--mu:#93a6ab;--pr:#5cc3d1;--on:#00343b;--ac:#123c43;--er:#f2b8b5;--ln:#2b3a3f;--sh:none}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 Roboto,system-ui,-apple-system,"Segoe UI",sans-serif;overscroll-behavior:none}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+.app{height:100%;display:flex;flex-direction:column;max-width:640px;margin:auto}
+header{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--sf);border-bottom:1px solid var(--ln)}
+header h1{font-size:20px;font-weight:600;margin:0;flex:1}
+main{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;padding:16px}
+nav{display:flex;background:var(--sf);border-top:1px solid var(--ln)}
+nav button{flex:1;border:0;background:none;color:var(--mu);padding:8px 0 10px;display:flex;flex-direction:column;align-items:center;gap:2px;font:500 12px inherit;font-family:inherit;min-height:64px}
+nav button .pill{width:60px;height:30px;border-radius:15px;display:grid;place-items:center;transition:background .2s}
+nav button.on{color:var(--tx)}nav button.on .pill{background:var(--ac);color:var(--pr)}
+svg.i{width:24px;height:24px;fill:currentColor;flex:none}
+.view{display:none}.view.on{display:block}
+textarea{width:100%;min-height:150px;resize:none;border:2px solid var(--ln);border-radius:16px;background:var(--sf);color:var(--tx);font:500 24px/1.35 inherit;font-family:inherit;padding:16px;outline:none}
+textarea:focus{border-color:var(--pr)}
+.row{display:flex;gap:10px;margin-top:12px}
+.btn{border:0;border-radius:14px;min-height:56px;padding:0 18px;font:600 16px inherit;font-family:inherit;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;background:var(--sf2);color:var(--tx);transition:transform .1s}
+.btn:active{transform:scale(.97)}
+.btn.p{background:var(--pr);color:var(--on);flex:1;font-size:18px;min-height:64px}
+.btn.sq{width:56px;padding:0}.btn.w{flex:1}
+.btn.out{background:none;border:2px solid var(--pr);color:var(--pr)}
+.lbl{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);margin:22px 4px 8px}
+.chips{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;padding-bottom:4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{scroll-snap-align:start;flex:none;border:1px solid var(--ln);background:var(--sf);color:var(--tx);border-radius:10px;padding:0 16px;min-height:44px;font:500 15px inherit;font-family:inherit}
+.chip.on{background:var(--ac);border-color:var(--pr);color:var(--pr)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.qa{min-height:76px;font-size:20px}
+.yes{background:var(--pr);color:var(--on)}
+.list{background:var(--sf);border-radius:16px;box-shadow:var(--sh);border:1px solid var(--ln);overflow:hidden}
+.item{display:flex;align-items:center;gap:4px;border-bottom:1px solid var(--ln);min-height:64px}
+.item:last-child{border:0}
+.item .t{flex:1;text-align:left;border:0;background:none;color:var(--tx);font:500 17px/1.3 inherit;font-family:inherit;padding:14px 16px;min-height:64px}
+.item .t small{display:block;color:var(--mu);font-size:13px;font-weight:400}
+.ib{border:0;background:none;color:var(--mu);width:48px;height:48px;border-radius:50%;display:grid;place-items:center}
+.ib.on{color:var(--pr)}
+.set{padding:14px 16px;border-bottom:1px solid var(--ln)}
+.set:last-child{border:0}
+.set label{display:flex;justify-content:space-between;font-weight:500;margin-bottom:8px}
+.set label span{color:var(--mu)}
+select,input[type=range]{width:100%}
+select{min-height:48px;border-radius:10px;border:1px solid var(--ln);background:var(--sf2);color:var(--tx);font:inherit;padding:0 10px}
+input[type=range]{accent-color:var(--pr);height:32px}
+.sw{display:flex;justify-content:space-between;align-items:center;font-weight:500}
+.sw input{appearance:none;width:52px;height:32px;border-radius:16px;background:var(--sf2);border:2px solid var(--mu);position:relative;transition:.2s;flex:none}
+.sw input::after{content:"";position:absolute;top:4px;left:4px;width:16px;height:16px;border-radius:50%;background:var(--mu);transition:.2s}
+.sw input:checked{background:var(--pr);border-color:var(--pr)}
+.sw input:checked::after{left:24px;width:20px;height:20px;top:2px;background:var(--on)}
+.empty{text-align:center;color:var(--mu);padding:40px 16px}
+.banner{display:none;align-items:center;gap:12px;background:var(--pr);color:var(--on);padding:12px 16px}
+.banner.on{display:flex}.banner div{flex:1;font-weight:500;font-size:14px}
+.banner button{border:0;border-radius:10px;min-height:40px;padding:0 14px;font:600 14px inherit;font-family:inherit;background:var(--on);color:var(--pr)}
+.banner button.g{background:none;color:var(--on)}
+#big{position:fixed;inset:0;background:var(--bg);display:none;flex-direction:column;padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px));z-index:9}
+#big.on{display:flex}
+#big p{flex:1;margin:0;display:grid;place-items:center;text-align:center;font-weight:700;font-size:clamp(34px,11vw,72px);line-height:1.15;overflow:auto;word-break:break-word}
+#toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:10px 18px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:20}
+#toast.on{opacity:1}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="banner" id="ban"><div id="bant">Install Speak Easy on this phone for quick access.</div><button id="bani">Install</button><button class="g" id="band">Not now</button></div>
+  <header><span data-i="chat" style="color:var(--pr)"></span><h1 id="ttl">Talk</h1><button class="ib" id="thm" aria-label="Toggle theme"><span data-i="theme"></span></button></header>
+  <main id="main">
+    <section class="view on" id="v-talk">
+      <textarea id="txt" placeholder="Type what you want to say" aria-label="Message"></textarea>
+      <div class="row">
+        <button class="btn p" id="speak"><span data-i="vol"></span>Speak</button>
+        <button class="btn sq" id="stop" aria-label="Stop"><span data-i="stop"></span></button>
+        <button class="btn sq" id="clr" aria-label="Clear"><span data-i="close"></span></button>
+      </div>
+      <div class="row">
+        <button class="btn w" id="show"><span data-i="full"></span>Show large</button>
+        <button class="btn w" id="att"><span data-i="bell"></span>Get attention</button>
+        <button class="btn sq" id="save" aria-label="Save to favourites"><span data-i="star"></span></button>
+      </div>
+      <div class="lbl">Quick answers</div>
+      <div class="grid2" id="qa"></div>
+      <div class="lbl">Recent</div>
+      <div class="chips" id="rec"></div>
+    </section>
+    <section class="view" id="v-phr">
+      <div class="chips" id="cats"></div>
+      <div class="list" id="plist" style="margin-top:14px"></div>
+      <div class="row"><input id="np" placeholder="Add your own phrase" style="flex:1;min-height:56px;border-radius:14px;border:2px solid var(--ln);background:var(--sf);color:var(--tx);font:16px inherit;font-family:inherit;padding:0 14px"><button class="btn sq p" style="flex:none;min-height:56px" id="npb" aria-label="Add phrase"><span data-i="add"></span></button></div>
+    </section>
+    <section class="view" id="v-his">
+      <div class="list" id="hlist"></div>
+      <div class="row"><button class="btn w out" id="hclr"><span data-i="del"></span>Clear history</button></div>
+    </section>
+    <section class="view" id="v-set">
+      <div class="list">
+        <div class="set"><label for="voice">Voice <span>Female by default</span></label><select id="voice"></select></div>
+        <div class="set"><label for="rate">Speed <span id="rateo"></span></label><input type="range" id="rate" min=".5" max="1.6" step=".1"></div>
+        <div class="set"><label for="pitch">Pitch <span id="pitcho"></span></label><input type="range" id="pitch" min=".5" max="1.5" step=".1"></div>
+        <div class="set"><label for="vol">Volume <span id="volo"></span></label><input type="range" id="vol" min=".2" max="1" step=".1"></div>
+        <div class="set sw"><span>Clear text after speaking</span><input type="checkbox" id="autoclr"></div>
+        <div class="set sw"><span>Save spoken messages to history</span><input type="checkbox" id="autosave"></div>
+        <div class="set sw"><span>Speak when pressing Enter</span><input type="checkbox" id="ent"></div>
+        <div class="set"><button class="btn w out" style="width:100%" id="test"><span data-i="vol"></span>Test voice</button></div>
+        <div class="set"><button class="btn w out" style="width:100%" id="inst"><span data-i="dl"></span>Install app</button></div>
+      </div>
+    </section>
+  </main>
+  <nav id="nav">
+    <button data-v="talk" class="on"><span class="pill" data-i="chat"></span>Talk</button>
+    <button data-v="phr"><span class="pill" data-i="grid"></span>Phrases</button>
+    <button data-v="his"><span class="pill" data-i="hist"></span>History</button>
+    <button data-v="set"><span class="pill" data-i="tune"></span>Settings</button>
+  </nav>
+</div>
+<div id="big"><p id="bigt"></p><div class="row"><button class="btn p" id="bigs"><span data-i="vol"></span>Speak</button><button class="btn w" id="bigc"><span data-i="close"></span>Close</button></div></div>
+<div id="toast"></div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const IC={chat:"M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z",vol:"M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z",stop:"M6 6h12v12H6z",close:"M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z",star:"M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z",hist:"M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z",tune:"M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z",grid:"M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z",full:"M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z",bell:"M12 22c1.1 0 2-.9 2-2h-4a2 2 0 0 0 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z",dl:"M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z",add:"M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z",del:"M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z",theme:"M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-5.4-5.4c0-1.81.89-3.42 2.26-4.4A9.4 9.4 0 0 0 12 3z",check:"M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"};
+const ico=n=>`<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="${IC[n]}"/></svg>`;
+const paint=r=>(r||document).querySelectorAll("[data-i]").forEach(e=>{if(!e.firstChild)e.innerHTML=ico(e.dataset.i)});
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ld=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}};
+const sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const PH={"Needs":["I need water","I am hungry","I need the bathroom","I need my medicine","I need to rest","Please help me","Please call the doctor","I am cold","I am hot","Please open the window","Please turn on the light","Please bring my phone"],"Feelings":["I am fine","I am in pain","My throat hurts","I feel tired","I feel dizzy","I feel better today","I love you","Thank you"],"Questions":["What time is it?","Where are you going?","Is dinner ready?","When will you be back?","Who is at the door?","Can you come here?"],"Replies":["Yes","No","Maybe","Wait a moment","Okay","Not now","Come here please","I will write it down"]};
+let S=Object.assign({rate:1,pitch:1.1,vol:1,voice:"",autoclr:false,autosave:true,ent:false},ld("se_set",{}));
+let hist=ld("se_h",[]),fav=ld("se_f",[]),custom=ld("se_c",[]),cat="Favourites",voices=[];
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("on"),1800)}
+const FEM=/female|samantha|zira|aria|jenny|heera|veena|neerja|swara|karen|moira|tessa|fiona|victoria|susan|hazel|libby|sonia|natasha|catherine|allison|ava|serena|kalpana|lekha|priya|google (uk|us) english/i;
+function pickF(){const en=voices.filter(v=>/^en/i.test(v.lang)&&FEM.test(v.name));for(const p of["en-IN","en-GB","en-US"]){const m=en.find(v=>v.lang.replace("_","-")===p);if(m)return m}return en[0]||voices.find(v=>FEM.test(v.name))}
+function loadVoices(){voices=speechSynthesis.getVoices();if(!S.voice){const f=pickF();if(f){S.voice=f.voiceURI;sv("se_set",S)}}const s=$("#voice");s.innerHTML='<option value="">Device default</option>'+voices.map(v=>`<option value="${esc(v.voiceURI)}">${esc(v.name)} (${esc(v.lang)})</option>`).join("");s.value=S.voice}
+function say(t){t=(t||"").trim();if(!t)return toast("Nothing to say yet");if(!("speechSynthesis" in window))return toast("Speech is not supported here");speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.rate=+S.rate;u.pitch=+S.pitch;u.volume=+S.vol;const v=voices.find(v=>v.voiceURI===S.voice);if(v){u.voice=v;u.lang=v.lang}speechSynthesis.speak(u);return true}
+function record(t){t=t.trim();if(!t||!S.autosave)return;hist=[{t,d:Date.now()},...hist.filter(h=>h.t!==t)].slice(0,60);sv("se_h",hist);renderRec();renderHist()}
+function speakText(t){if(say(t)){record(t)}}
+function beep(){try{const c=new (window.AudioContext||window.webkitAudioContext)();[0,.35,.7].forEach(o=>{const s=c.createOscillator(),g=c.createGain();s.frequency.value=880;s.connect(g);g.connect(c.destination);g.gain.setValueAtTime(.4*S.vol,c.currentTime+o);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+o+.28);s.start(c.currentTime+o);s.stop(c.currentTime+o+.3)});if(navigator.vibrate)navigator.vibrate([200,100,200])}catch(e){}}
+const isFav=t=>fav.includes(t);
+function toggleFav(t){fav=isFav(t)?fav.filter(x=>x!==t):[t,...fav];sv("se_f",fav);renderPhr();renderHist();toast(isFav(t)?"Saved to Favourites":"Removed from Favourites")}
+function renderQA(){$("#qa").innerHTML=[["Yes","yes"],["No",""],["Wait","" ],["Thank you",""],["Help me","yes"],["Okay",""]].map(([a,c])=>`<button class="btn qa ${c}" data-say="${a}">${a}</button>`).join("")}
+function renderRec(){$("#rec").innerHTML=hist.length?hist.slice(0,10).map(h=>`<button class="chip" data-say="${esc(h.t)}">${esc(h.t)}</button>`).join(""):'<span style="color:var(--mu);font-size:14px;padding:0 4px">Spoken messages appear here</span>'}
+function item(t,sub){return `<div class="item"><button class="t" data-say="${esc(t)}">${esc(t)}${sub?`<small>${sub}</small>`:""}</button><button class="ib ${isFav(t)?"on":""}" data-fav="${esc(t)}" aria-label="Favourite">${ico("star")}</button></div>`}
+function renderPhr(){const cats=["Favourites",...Object.keys(PH),"My phrases"];$("#cats").innerHTML=cats.map(c=>`<button class="chip ${c===cat?"on":""}" data-cat="${c}">${c}</button>`).join("");const l=cat==="Favourites"?fav:cat==="My phrases"?custom:PH[cat];$("#plist").innerHTML=l.length?l.map(t=>item(t)).join(""):'<div class="empty">Nothing here yet. Tap the star on any phrase to save it.</div>'}
+function renderHist(){$("#hlist").innerHTML=hist.length?hist.map(h=>item(h.t,new Date(h.d).toLocaleString([], {hour:"numeric",minute:"2-digit",month:"short",day:"numeric"}))).join(""):'<div class="empty">No history yet.</div>'}
+document.addEventListener("click",e=>{const s=e.target.closest("[data-say]"),f=e.target.closest("[data-fav]"),c=e.target.closest("[data-cat]");if(s)speakText(s.dataset.say);else if(f)toggleFav(f.dataset.fav);else if(c){cat=c.dataset.cat;renderPhr()}});
+$("#nav").onclick=e=>{const b=e.target.closest("button");if(!b)return;$$("nav button").forEach(x=>x.classList.toggle("on",x===b));$$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-"+b.dataset.v));$("#ttl").textContent=b.textContent;$("#main").scrollTop=0};
+$("#speak").onclick=()=>{const t=$("#txt").value;speakText(t);if(t.trim()&&S.autoclr)$("#txt").value=""};
+$("#stop").onclick=()=>speechSynthesis.cancel();
+$("#clr").onclick=()=>{$("#txt").value="";$("#txt").focus()};
+$("#att").onclick=beep;
+$("#save").onclick=()=>{const t=$("#txt").value.trim();if(!t)return toast("Type a message first");if(!isFav(t))toggleFav(t);else toast("Already in Favourites")};
+$("#txt").addEventListener("keydown",e=>{if(S.ent&&e.key==="Enter"&&!e.shiftKey){e.preventDefault();$("#speak").click()}});
+$("#show").onclick=()=>{const t=$("#txt").value.trim();if(!t)return toast("Type a message first");$("#bigt").textContent=t;$("#big").classList.add("on")};
+$("#bigc").onclick=()=>$("#big").classList.remove("on");
+$("#bigs").onclick=()=>say($("#bigt").textContent);
+$("#npb").onclick=()=>{const v=$("#np").value.trim();if(!v)return;custom=[v,...custom.filter(x=>x!==v)];sv("se_c",custom);$("#np").value="";cat="My phrases";renderPhr()};
+$("#hclr").onclick=()=>{hist=[];sv("se_h",hist);renderHist();renderRec()};
+$("#thm").onclick=()=>{const d=document.documentElement,dark=d.dataset.theme?d.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;d.dataset.theme=dark?"light":"dark";sv("se_t",d.dataset.theme)};
+const th=ld("se_t",null);if(th)document.documentElement.dataset.theme=th;
+[["rate","rateo","x"],["pitch","pitcho",""],["vol","volo",""]].forEach(([k,o,u])=>{const el=$("#"+k);el.value=S[k];$("#"+o).textContent=S[k]+u;el.oninput=()=>{S[k]=+el.value;$("#"+o).textContent=el.value+u;sv("se_set",S)}});
+[["autoclr"],["autosave"],["ent"]].forEach(([k])=>{const el=$("#"+k);el.checked=S[k];el.onchange=()=>{S[k]=el.checked;sv("se_set",S)}});
+$("#voice").onchange=e=>{S.voice=e.target.value;sv("se_set",S)};
+$("#test").onclick=()=>say("This is how I will sound.");
+if("speechSynthesis" in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
+/* PWA install */
+let dp=null;const ios=/iphone|ipad|ipod/i.test(navigator.userAgent),standalone=matchMedia("(display-mode:standalone)").matches||navigator.standalone;
+try{if("serviceWorker" in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("sw.js").catch(()=>{})}catch(e){}
+addEventListener("beforeinstallprompt",e=>{e.preventDefault();dp=e;if(!ld("se_dis",false))$("#ban").classList.add("on")});
+async function install(){if(dp){dp.prompt();await dp.userChoice;dp=null;$("#ban").classList.remove("on")}else toast(ios?"Tap Share, then Add to Home Screen":"Use browser menu, then Install app")}
+$("#bani").onclick=install;$("#inst").onclick=install;
+$("#band").onclick=()=>{$("#ban").classList.remove("on");sv("se_dis",true)};
+if(standalone)$("#inst").parentNode.style.display="none";
+else if(ios&&!ld("se_dis",false)){$("#bant").textContent="To install: tap Share, then Add to Home Screen.";$("#bani").style.display="none";$("#ban").classList.add("on")}
+paint();renderQA();renderRec();renderPhr();renderHist();paint();
+</script>
+</body>
+</html>
